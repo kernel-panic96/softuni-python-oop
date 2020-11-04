@@ -1,0 +1,9 @@
+.ropeproject/
+__pycache__/
+.mypy_cache/
+.idea/
+.venv/
+venv/
+.python-version
+.vim/
+node_modules/
