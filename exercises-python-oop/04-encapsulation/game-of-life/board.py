@@ -31,30 +31,19 @@ class Board:
     def _get_neighbours(self, row: int, col: int):
         neighbours = 0
 
-        can_go_up = row - 1 >= 0
-        can_go_down = row + 1 < self.__height
-        can_go_left = col - 1 >= 0
-        can_go_right = col + 1 < self.__width
-
-        UP = LEFT = -1
-        RIGHT = DOWN = 1
-
-        if can_go_right:
-            neighbours += int(self.__board[row][col+RIGHT])
-        if can_go_left:
-            neighbours += int(self.__board[row][col+LEFT])
-        if can_go_down:
-            neighbours += int(self.__board[row+DOWN][col])
-        if can_go_up:
-            neighbours += int(self.__board[row+UP][col])
-        if can_go_up and can_go_right:
-            neighbours += int(self.__board[row+UP][col+RIGHT])
-        if can_go_down and can_go_right:
-            neighbours += int(self.__board[row+DOWN][col+RIGHT])
-        if can_go_down and can_go_left:
-            neighbours += int(self.__board[row+DOWN][col+LEFT])
-        if can_go_up and can_go_left:
-            neighbours += int(self.__board[row+UP][col+LEFT])
+        # NOTE(yavor): if this confuses you, see the commit, it's simpler
+        # and equivalent
+        # Basically we have to generate each surrounding coordinates of the matrix
+        # (-1, -1); (-1, 0); (-1, 1); (0, -1); (0, 1) and so on
+        directions = [(delta_y, delta_x) for delta_x in [1, 0, -1] for delta_y in [1, 0, -1]]
+        directions = [d for d in directions if d != (0, 0)]
+        for delta_row, delta_col in directions:
+            target_row, target_col = row + delta_row, col + delta_col
+            if not (0 <= target_row < self.__height):
+                continue
+            if not (0 <= target_col < self.__width):
+                continue
+            neighbours += int(self.__board[target_row][target_col])
 
         return neighbours
 
