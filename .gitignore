@@ -7,3 +7,5 @@ venv/
 .python-version
 .vim/
 node_modules/
+password.secret
+email.secret
